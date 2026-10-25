@@ -3,6 +3,7 @@ name: Build Safari Extension
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,9 +13,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Verify files exist
+    - name: Verify extension source folder
       run: |
-        # This lists your files in the logs so you can verify the path
         ls -la ./extension-source
 
     - name: Convert Web Extension for iOS
@@ -29,7 +29,7 @@ jobs:
       run: |
         cd built-output/*
         xcodebuild -sdk iphonesimulator -configuration Release build
-      
+
     - name: Archive Built Project
       run: |
         zip -r safari-extension-project.zip ./built-output
