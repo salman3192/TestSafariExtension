@@ -1,41 +1,4 @@
-name: Build Safari Extension
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: macos-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Verify extension source folder
+- name: Debug - List root directory contents
       run: |
-        ls -la ./extension-source
-
-    - name: Convert Web Extension for iOS
-      run: |
-        xcrun safari-web-extension-converter ./extension-source \
-          --ios-only \
-          --bundle-identifier "com.test.safariparentalcontrol" \
-          --project-output-path ./built-output \
-          --force
-
-    - name: Compile for iOS Simulator
-      run: |
-        cd built-output/*
-        xcodebuild -sdk iphonesimulator -configuration Release build
-
-    - name: Archive Built Project
-      run: |
-        zip -r safari-extension-project.zip ./built-output
-
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: iOS-Safari-Extension-Compiled
-        path: safari-extension-project.zip
+        echo "Listing root directory:"
+        ls -la
