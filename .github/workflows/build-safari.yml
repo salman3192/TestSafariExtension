@@ -12,6 +12,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Verify files exist
+      run: |
+        # This lists your files in the logs so you can verify the path
+        ls -la ./extension-source
+
     - name: Convert Web Extension for iOS
       run: |
         xcrun safari-web-extension-converter ./extension-source \
@@ -22,7 +27,6 @@ jobs:
 
     - name: Compile for iOS Simulator
       run: |
-        # Find the generated .xcodeproj folder name automatically and build it
         cd built-output/*
         xcodebuild -sdk iphonesimulator -configuration Release build
       
