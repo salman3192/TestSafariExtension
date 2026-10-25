@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest # This spins up a free cloud Mac runner
+    runs-on: macos-latest
 
     steps:
     - name: Checkout repository
@@ -14,20 +14,24 @@ jobs:
 
     - name: Convert Web Extension for iOS
       run: |
-        # Run Apple's built-in tool on macOS to convert the extension folder
         xcrun safari-web-extension-converter ./extension-source \
           --ios-only \
-          --bundle-identifier "com.yourname.safariparentalcontrol" \
+          --bundle-identifier "com.test.safariparentalcontrol" \
           --project-output-path ./built-output \
           --force
+
+    - name: Compile for iOS Simulator
+      run: |
+        # Find the generated .xcodeproj folder name automatically and build it
+        cd built-output/*
+        xcodebuild -sdk iphonesimulator -configuration Release build
       
     - name: Archive Built Project
       run: |
-        # Zip up the generated Xcode project so you can download it easily
         zip -r safari-extension-project.zip ./built-output
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: iOS-Safari-Extension
+        name: iOS-Safari-Extension-Compiled
         path: safari-extension-project.zip
