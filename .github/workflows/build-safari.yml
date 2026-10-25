@@ -13,9 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify extension source folder
+      - name: DEBUG - Show exact working directory and files
         run: |
-          ls -la ./extension-source
+          echo "Current working directory:"
+          pwd
+          echo "Listing everything in the root folder:"
+          ls -la
 
       - name: Convert Web Extension for iOS
         run: |
